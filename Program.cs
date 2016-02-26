@@ -36,12 +36,12 @@ namespace GAdeckbuilder
             {
                 inputstring = inputReader.ReadLine();
                 sql = "SELECT * FROM cards INNER JOIN colors ON cards.name = colors.name where cards.setcode = 'BFZ' AND colors.setcode = 'BFZ' AND cards.name = '" + inputstring + "';";
-                Console.WriteLine(sql);
+               // Console.WriteLine(sql);
                 cmd = new SQLiteCommand(sql, dbConnect);
                 dbread = cmd.ExecuteReader();
                 while (dbread.Read())
                 {
-                    Console.WriteLine(dbread[1].ToString());
+                    //Console.WriteLine(dbread[1].ToString());
                     white = false; blue = false; black = false; red = false; green = false;
                     if (Convert.ToBoolean(dbread["white"].ToString()))
                     {
@@ -63,13 +63,13 @@ namespace GAdeckbuilder
                     {
                         green = true;
                     }
-                    Console.WriteLine(dbread["cmc"].ToString());
+                   // Console.WriteLine(dbread["cmc"].ToString());
                     cmc = dbread["cmc"].ToString();
-                    Console.WriteLine(cmc);
+                    //Console.WriteLine(cmc);
                     power = dbread["PowerLevel"].ToString();
-                    Console.WriteLine(power);
+                    //Console.WriteLine(power);
                 }
-                Console.WriteLine(inputstring + white + blue + red + black + green + cmc + power);
+               // Console.WriteLine(inputstring + white + blue + red + black + green + cmc + power);
                 CardPool.Add(new Card(inputstring, white, blue, black, red, green, int.Parse(cmc), int.Parse(power)));
             }
             inputReader.Close();
@@ -88,10 +88,10 @@ namespace GAdeckbuilder
             var mutation = new ReverseSequenceMutation();
             var fitness = new DeckFitness();
             var chromosome = new DeckChromosome();
-            var population = new Population(100, 100, chromosome);
+            var population = new Population(400, 400, chromosome);
             
             var ga = new GeneticAlgorithm(population, fitness, selection, crossover, mutation);
-            ga.Termination = new FitnessStagnationTermination(1000);
+            ga.Termination = new FitnessStagnationTermination(4000);
             
             ga.CrossoverProbability = 0.80f;
             ga.MutationProbability = 1.00f;
